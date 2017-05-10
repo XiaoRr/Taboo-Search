@@ -30,12 +30,18 @@
     <ClInclude Include="禁忌搜索图像版.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="禁忌搜索图像版.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="path.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -3,14 +3,14 @@
 
 #include "stdafx.h"
 #include "禁忌搜索图像版.h"
-
+#include "Path.h"
 #define MAX_LOADSTRING 100
 
 // 全局变量: 
 HINSTANCE hInst;                                // 当前实例
 WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
 WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
-
+Path path;
 // 此代码模块中包含的函数的前向声明: 
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -26,7 +26,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 在此放置代码。
-
     // 初始化全局字符串
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_MY, szWindowClass, MAX_LOADSTRING);
@@ -98,7 +97,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // 将实例句柄存储在全局变量中
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0, 600, 800, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -125,12 +124,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+	case WM_CREATE:
+	{
+		//创建按钮  
+		HWND hButton = CreateWindow("Button", "update", WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
+			400, 600, 160, 65, hWnd, (HMENU)10086, NULL, NULL);
+	}
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
             // 分析菜单选择: 
             switch (wmId)
             {
+			case 10086:
+				path.update();
+				//SendMessage(hWnd, WM_PAINT, 0, 0);
+				InvalidateRect(hWnd, NULL, true);
+				break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
@@ -147,6 +157,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 在此处添加使用 hdc 的任何绘图代码...
+			path.draw(hdc);
             EndPaint(hWnd, &ps);
         }
         break;
